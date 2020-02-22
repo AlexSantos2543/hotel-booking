@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Component
-public interface RoomListRepository extends MongoRepository<Room, String> {
+public interface RoomRepository extends MongoRepository<Room, String> {
 }

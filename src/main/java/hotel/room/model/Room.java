@@ -3,7 +3,6 @@ package hotel.room.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -12,15 +11,16 @@ import java.util.UUID;
 @Document(collection = "room-server")
 public class Room {
 
-    private String refId = UUID.randomUUID().toString();
+    @Id
+    private String refId;
 
-    private final String name;
-    private final String type;
-    private final String desc;
-    private final String code;
+    private  String name;
+    private  String type;
+    private  String desc;
+    private  String code;
 //    private RoomPrice price;
-    private final List<BedDetails> bedDetail;
-    private String smokeIndicator;
+    private  List<BedDetails> bedDetail;
+    private  String smokeIndicator;
 
     @JsonCreator
     public Room(@JsonProperty("refId") String refId, @JsonProperty("name") String name,
@@ -61,6 +61,34 @@ public class Room {
 
     public String getSmokeIndicator() {
         return smokeIndicator;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setBedDetail(List<BedDetails> bedDetail) {
+        this.bedDetail = bedDetail;
+    }
+
+    public void setSmokeIndicator(String smokeIndicator) {
+        this.smokeIndicator = smokeIndicator;
     }
 
     @Override
