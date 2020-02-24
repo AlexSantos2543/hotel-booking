@@ -1,6 +1,6 @@
-package hotel.room.repository;
+package hotel.repository;
 
-import hotel.room.model.Room;
+import hotel.model.Room;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;

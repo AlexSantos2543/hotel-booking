@@ -1,12 +1,11 @@
-package hotel.room.service;
+package hotel.service;
 
-import hotel.room.model.Room;
-import hotel.room.model.RoomRequest;
-import hotel.room.repository.RoomRepository;
+import hotel.model.Room;
+import hotel.model.RoomRequest;
+import hotel.repository.RoomRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -27,19 +26,16 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
-    public Room updateRooms(Room room) {
-        return roomRepository.save(room);
-    }
-
-    public Optional<Room> removeRoomById(String refId) {
-        Optional<Room> room = roomRepository.findById(refId);
+    public Optional<Room> removeRoomById(String refId) throws ResourceNotFoundException {
+        Optional<Room> room = Optional.ofNullable(roomRepository.findById(refId)
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found for this refId :: " + refId)));
         room.ifPresent(r -> roomRepository.delete(r));
         return room;
     }
 
-    public Optional<Room> updateRoomDetails(String id, RoomRequest roomRequest) throws ResourceNotFoundException {
-        Optional<Room> room = Optional.ofNullable(roomRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Room not found for this id :: " + id)));
+    public Optional<Room> updateRoomDetails(String refId, RoomRequest roomRequest) throws ResourceNotFoundException {
+        Optional<Room> room = Optional.ofNullable(roomRepository.findById(refId)
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found for this id :: " + refId)));
         room.ifPresent(r -> r.setName(roomRequest.getName()));
         room.ifPresent(r -> r.setType(roomRequest.getType()));
         room.ifPresent(r -> r.setDesc(roomRequest.getDesc()));

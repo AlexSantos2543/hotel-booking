@@ -1,4 +1,4 @@
-package hotel.room.model;
+package hotel.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,14 +15,14 @@ public class RoomListResponse {
         this.rooms = rooms;
     }
 
-    public List<Room> getRoomListItems() {
+    public List<Room> getRooms() {
         return rooms;
     }
 
     @Override
     public String toString() {
         return "RoomListResponse{" +
-                "roomListItems=" + rooms +
+                "rooms=" + rooms +
                 '}';
     }
 }

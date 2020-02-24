@@ -1,20 +1,20 @@
-package hotel.room.api;
+package hotel.api;
 
-import hotel.room.model.RoomRequest;
-import hotel.room.model.RoomListResponse;
-import hotel.room.model.Room;
-import hotel.room.service.ResourceNotFoundException;
-import hotel.room.service.RoomService;
+import hotel.model.RoomRequest;
+import hotel.model.RoomListResponse;
+import hotel.model.Room;
+import hotel.service.ResourceNotFoundException;
+import hotel.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/v69/hotel/rooms")
-public class RoomListController {
+public class RoomController {
 
     @Autowired
     public RoomService roomListService;
@@ -35,12 +35,12 @@ public class RoomListController {
     }
 
     @PutMapping("{refId}")
-    public Optional<Room> UpdateRoom(@PathVariable("refId") String refId, @RequestBody @Valid RoomRequest roomRequest) throws ResourceNotFoundException {
+    public Optional<Room> UpdateRoom(@PathVariable("refId") @NotBlank String refId, @RequestBody @Valid RoomRequest roomRequest) throws ResourceNotFoundException {
         return roomListService.updateRoomDetails(refId,roomRequest);
     }
 
     @DeleteMapping("{refId}")
-    public Optional<Room> deleteRoom(@PathVariable("refId") String refId) {
+    public Optional<Room> deleteRoom(@PathVariable("refId") @NotBlank String refId) throws ResourceNotFoundException {
         return roomListService.removeRoomById(refId);
     }
 }
