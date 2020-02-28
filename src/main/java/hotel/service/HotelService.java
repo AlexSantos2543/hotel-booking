@@ -1,11 +1,17 @@
 package hotel.service;
 
-import hotel.model.*;
+import hotel.model.hotel.Hotel;
+import hotel.model.hotel.HotelStatus;
 import hotel.repository.HotelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -16,12 +22,20 @@ public class HotelService {
     @Autowired
     HotelRepository hotelRepository;
 
-//    public List<Hotel> getAllRooms() {
-//        return roomRepository.findAll();
-//    }
+    public Page<Hotel> getByStatus(HotelStatus status, Pageable pageable) {
+        return hotelRepository.findByStatus(status, pageable);
+    }
+
+    public List<Hotel> getAllHotels() {
+        return hotelRepository.findAll();
+    }
 
     public Hotel addHotels(Hotel hotel) {
         return hotelRepository.save(hotel);
+    }
+
+    public Page<Hotel> findHotelByNameAndCity(String name, String city, PageRequest pageRequest) {
+        return hotelRepository.findByNameLikeAndCity(name, city, pageRequest);
     }
 
 //    public Optional<Hotel> removeHotelyId(String id) throws ResourceNotFoundException {

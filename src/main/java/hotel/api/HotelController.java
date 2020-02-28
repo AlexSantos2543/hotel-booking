@@ -1,34 +1,48 @@
 package hotel.api;
 
-import hotel.model.*;
+import hotel.model.hotel.Hotel;
+import hotel.model.hotel.HotelRequest;
+import hotel.model.hotel.HotelStatus;
 import hotel.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v69/hotels/")
 public class HotelController {
 
     @Autowired
-    public HotelService hotelService;
+    HotelService hotelService;
 
-//    @GetMapping
-//    public RoomListResponse getRoomList() {
-//        return new RoomListResponse(roomListService.getAllRooms());
-//    }
+    @GetMapping
+    public List<Hotel> getAllHotels() {
+        return hotelService.getAllHotels();
+    }
+
+    @GetMapping("/status/{status}")
+    public Page<Hotel> getHotelByStatus(@PathVariable HotelStatus status, Pageable pageable) {
+        return hotelService.getByStatus(status, pageable);
+    }
 
     @PostMapping
     public Hotel createHotels(@RequestBody @Valid HotelRequest hotelRequest) {
 
-        return hotelService.addHotels(
-                new Hotel(null, hotelRequest.getName(),
-                        hotelRequest.getDescription(), hotelRequest.getCity(),
-                        hotelRequest.getPhoto(), hotelRequest.getPriceFrom(),
-                        hotelRequest.getPriceTo(), hotelRequest.getStatus(), hotelRequest.getAvailableRooms(), LocalDate.now(), LocalDateTime.now()));
+        return hotelService.addHotels(new Hotel(hotelRequest.getName(), hotelRequest.getDescription(), hotelRequest.getCity(),
+                hotelRequest.getPhoto(), hotelRequest.getPriceFrom(), hotelRequest.getPriceTo(), hotelRequest.getStatus(),
+                hotelRequest.getAvailableRooms()));
+    }
+
+
+    @GetMapping(path="/search")
+    public Page<Hotel> findHotelByNameAndCity(@RequestParam String name, @RequestParam String city,
+                                 @RequestParam int page, @RequestParam int pageSize) {
+        return hotelService.findHotelByNameAndCity(name, city, PageRequest.of(page, pageSize));
     }
 
 //    @PutMapping("{refId}")

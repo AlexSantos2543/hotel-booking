@@ -1,8 +1,9 @@
-package hotel.model;
+package hotel.model.hotel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -21,6 +22,15 @@ public class Hotel {
     private Integer availableRooms;
     private LocalDate createdDate;
     private LocalDateTime updatedDate;
+
+    public Hotel() {
+
+    }
+
+    public Hotel(String name, String description, String city, String photo, Double priceFrom, Double priceTo, String status, Integer availableRooms) {
+
+        this(null, name, description, city, photo, priceFrom, priceTo, status, availableRooms, LocalDate.now(), LocalDateTime.now());
+    }
 
     public Hotel(@JsonProperty("id") String id, @JsonProperty("name") String name, @JsonProperty("description") String description,
                          @JsonProperty("city") String city, @JsonProperty("photo") String photo, @JsonProperty("priceFrom") Double priceFrom,

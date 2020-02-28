@@ -1,4 +1,4 @@
-package hotel.model;
+package hotel.model.hotel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
