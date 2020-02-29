@@ -1,8 +1,7 @@
 package hotel.model.hotel;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.LocalDate;
 
 public class HotelRequest {
 
@@ -15,6 +14,7 @@ public class HotelRequest {
     private String status;
     private Integer availableRooms;
 
+    @JsonCreator
     public HotelRequest(@JsonProperty("name") String name, @JsonProperty("description") String description,
                         @JsonProperty("city") String city, @JsonProperty("photo") String photo, @JsonProperty("priceFrom") Double priceFrom,
                         @JsonProperty("priceTo") Double priceTo, @JsonProperty("status") String status, @JsonProperty("availableRooms") Integer availableRooms) {

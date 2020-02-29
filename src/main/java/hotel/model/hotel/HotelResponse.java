@@ -1,23 +1,30 @@
 package hotel.model.hotel;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import hotel.model.hotel.Hotel;
-import hotel.model.hotel.HotelRequest;
-import hotel.service.HotelService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+
+import java.util.List;
+
 
 public class HotelResponse {
 
-    @Autowired
-    private HotelService hotelService;
+    private final List<Hotel> hotels;
 
-    public HotelResponse() {
+    @JsonCreator
+    public HotelResponse(@JsonProperty("items") List<Hotel> hotels) {
+        this.hotels = hotels;
     }
 
-    public Hotel hotelResponse(HotelRequest hotelRequest) {
-
-        return hotelService.addHotels(new Hotel(null, hotelRequest.getName(), hotelRequest.getDescription(), hotelRequest.getCity(),
-                hotelRequest.getPhoto(), hotelRequest.getPriceFrom(), hotelRequest.getPriceTo(), hotelRequest.getStatus(),
-                hotelRequest.getAvailableRooms(), null, null));
+    public List<Hotel> getHotels() {
+        return hotels;
     }
 
+    @Override
+    public String toString() {
+        return "HotelResponse{" +
+                "hotels=" + hotels +
+                '}';
+    }
 }

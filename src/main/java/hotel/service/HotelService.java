@@ -1,6 +1,9 @@
 package hotel.service;
 
+import hotel.model.Room;
+import hotel.model.RoomRequest;
 import hotel.model.hotel.Hotel;
+import hotel.model.hotel.HotelRequest;
 import hotel.model.hotel.HotelStatus;
 import hotel.repository.HotelRepository;
 import org.slf4j.Logger;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -30,6 +34,17 @@ public class HotelService {
         return hotelRepository.findAll();
     }
 
+    public Optional<Hotel> getHotelById(String id) {
+        return hotelRepository.findById(id);
+    }
+
+    public Optional<Hotel> removeHotelById(String id) throws ResourceNotFoundException {
+        Optional<Hotel> hotel = Optional.ofNullable(hotelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found for this _id :: " + id)));
+        hotel.ifPresent(r -> hotelRepository.delete(r));
+        return hotel;
+    }
+
     public Hotel addHotels(Hotel hotel) {
         return hotelRepository.save(hotel);
     }
@@ -38,26 +53,23 @@ public class HotelService {
         return hotelRepository.findByNameLikeAndCity(name, city, pageRequest);
     }
 
-//    public Optional<Hotel> removeHotelyId(String id) throws ResourceNotFoundException {
-//        Optional<Room> room = Optional.ofNullable(roomRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Room not found for this refId :: " + refId)));
-//        room.ifPresent(r -> roomRepository.delete(r));
-//        return room;
-//    }
-//
-//    public Optional<Room> updateRoomDetails(String refId, RoomRequest roomRequest) throws ResourceNotFoundException {
-//        Optional<Room> room = Optional.ofNullable(roomRepository.findById(refId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Room not found for this id :: " + refId)));
-//        room.ifPresent(r -> r.setName(roomRequest.getName()));
-//        room.ifPresent(r -> r.setType(roomRequest.getType()));
-//        room.ifPresent(r -> r.setDesc(roomRequest.getDesc()));
-//        room.ifPresent(r -> r.setCode(roomRequest.getCode()));
-//        room.ifPresent(r -> r.setBedDetail(roomRequest.getBedDetail()));
-//        room.ifPresent(r -> r.setSmokeIndicator(roomRequest.getSmokeIndicator()));
-//
-//        room.ifPresent(r -> roomRepository.save(r));
-//
-//        return room;
+    public Optional<Hotel> updateHotelById(String id, HotelRequest hotelRequest) throws ResourceNotFoundException {
 
-//    }
+        Optional<Hotel> hotel = Optional.ofNullable(hotelRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Hotel not found for this id :: " + id)));
+
+        hotel.ifPresent(h -> h.setName(hotelRequest.getName()));
+        hotel.ifPresent(h -> h.setDescription(hotelRequest.getDescription()));
+        hotel.ifPresent(h -> h.setCity(hotelRequest.getCity()));
+        hotel.ifPresent(h -> h.setPhoto(hotelRequest.getPhoto()));
+        hotel.ifPresent(h -> h.setPriceFrom(hotelRequest.getPriceFrom()));
+        hotel.ifPresent(h -> h.setPriceTo(hotelRequest.getPriceTo()));
+        hotel.ifPresent(h -> h.setStatus(hotelRequest.getStatus()));
+        hotel.ifPresent(h -> h.setAvailableRooms(hotelRequest.getAvailableRooms()));
+
+        hotel.ifPresent(h -> hotelRepository.save(h));
+
+        return hotel;
+    }
+
 }

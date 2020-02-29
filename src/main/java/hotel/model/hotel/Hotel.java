@@ -1,5 +1,6 @@
 package hotel.model.hotel;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 public class Hotel {
 
     @Id
-    private String id;
+    private String _id;
     private String name;
     private String description;
     private String city;
@@ -32,11 +33,12 @@ public class Hotel {
         this(null, name, description, city, photo, priceFrom, priceTo, status, availableRooms, LocalDate.now(), LocalDateTime.now());
     }
 
-    public Hotel(@JsonProperty("id") String id, @JsonProperty("name") String name, @JsonProperty("description") String description,
+    @JsonCreator
+    public Hotel(@JsonProperty("id") String _id, @JsonProperty("name") String name, @JsonProperty("description") String description,
                          @JsonProperty("city") String city, @JsonProperty("photo") String photo, @JsonProperty("priceFrom") Double priceFrom,
                          @JsonProperty("priceTo") Double priceTo, @JsonProperty("status") String status, @JsonProperty("availableRooms") Integer availableRooms,
                          @JsonProperty("createdDate") LocalDate createdDate, @JsonProperty("updatedDate") LocalDateTime updatedDate) {
-        this.id = id;
+        this._id = _id;
         this.name = name;
         this.description = description;
         this.city = city;
@@ -50,7 +52,7 @@ public class Hotel {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public String getName() {
@@ -93,10 +95,42 @@ public class Hotel {
         return updatedDate;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public void setPriceFrom(Double priceFrom) {
+        this.priceFrom = priceFrom;
+    }
+
+    public void setPriceTo(Double priceTo) {
+        this.priceTo = priceTo;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setAvailableRooms(Integer availableRooms) {
+        this.availableRooms = availableRooms;
+    }
+
     @Override
     public String toString() {
         return "HotelResponse{" +
-                "id='" + id + '\'' +
+                "id='" + _id + '\'' +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", city='" + city + '\'' +
