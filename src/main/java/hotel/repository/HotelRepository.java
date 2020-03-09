@@ -4,7 +4,6 @@ import hotel.model.hotel.Hotel;
 import hotel.model.hotel.HotelStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -19,5 +18,6 @@ public interface HotelRepository extends MongoRepository<Hotel, String> {
 
     List<Hotel> findAll();
 
-    Page<Hotel> findByStatus(HotelStatus status, Pageable pageable);
+    Page<Hotel> findByStatus(HotelStatus status, PageRequest request);
+
 }

@@ -1,7 +1,6 @@
 package hotel.service;
 
-import hotel.model.Room;
-import hotel.model.RoomRequest;
+import hotel.exception.ResourceNotFoundException;
 import hotel.model.hotel.Hotel;
 import hotel.model.hotel.HotelRequest;
 import hotel.model.hotel.HotelStatus;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +24,9 @@ public class HotelService {
     @Autowired
     HotelRepository hotelRepository;
 
-    public Page<Hotel> getByStatus(HotelStatus status, Pageable pageable) {
-        return hotelRepository.findByStatus(status, pageable);
+    public Page<Hotel> getByStatus(HotelStatus status, PageRequest pageRequest) {
+
+        return hotelRepository.findByStatus(status, pageRequest);
     }
 
     public List<Hotel> getAllHotels() {
@@ -49,9 +48,9 @@ public class HotelService {
         return hotelRepository.save(hotel);
     }
 
-    public Page<Hotel> findHotelByNameAndCity(String name, String city, PageRequest pageRequest) {
-        return hotelRepository.findByNameLikeAndCity(name, city, pageRequest);
-    }
+//    public Page<Hotel> findHotelByNameAndCity(String city, String check_in, String check_out, PageRequest pageRequest) {
+//        return hotelRepository.findByNameLikeAndCity(name, city, pageRequest);
+//    }
 
     public Optional<Hotel> updateHotelById(String id, HotelRequest hotelRequest) throws ResourceNotFoundException {
 

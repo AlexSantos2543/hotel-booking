@@ -1,20 +1,19 @@
 package hotel.api;
 
-import hotel.model.hotel.Hotel;
-import hotel.model.hotel.HotelRequest;
-import hotel.model.hotel.HotelResponse;
-import hotel.model.hotel.HotelStatus;
+import hotel.model.hotel.*;
+import hotel.model.room.Room;
 import hotel.service.HotelService;
-import hotel.service.ResourceNotFoundException;
+import hotel.exception.ResourceNotFoundException;
+import hotel.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/v69/hotels/")
@@ -22,6 +21,9 @@ public class HotelController {
 
     @Autowired
     HotelService hotelService;
+
+    @Autowired
+    RoomService roomService;
 
     @GetMapping
     public HotelResponse getAllHotels() {
@@ -31,12 +33,19 @@ public class HotelController {
     @GetMapping("{id}")
     public Optional<Hotel> getHotelById(@PathVariable("id") String id) {
         return hotelService.getHotelById(id);
+    }
 
+    @GetMapping("{id}/rooms")
+    public Stream<Room> getRoomByHotelById(@PathVariable("id") String id) {
+
+        return roomService.getAllRooms().stream().filter(h -> h.getHotelId().equals(id));
     }
 
     @GetMapping("status/{status}")
-    public Page<Hotel> getHotelByStatus(@PathVariable HotelStatus status, Pageable pageable) {
-        return hotelService.getByStatus(status, pageable);
+    public Page<Hotel> getHotelByStatus(@PathVariable HotelStatus status, @RequestParam int page, @RequestParam int size) {
+        PageRequest request = PageRequest.of(page, size);
+
+        return hotelService.getByStatus(status, request);
     }
 
     @PostMapping
